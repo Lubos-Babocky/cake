@@ -67,6 +67,18 @@ return function (RouteBuilder $routes): void {
 		$builder->connect('/users/view', ['controller' => 'Users', 'action' => 'view']);
 		$builder->connect('/users/edit', ['controller' => 'Users', 'action' => 'edit']);
 
+		// Routes for Categories
+		$builder->connect('/categories', ['controller' => 'Categories', 'action' => 'index']);
+		$builder->connect('/categories/add', ['controller' => 'Categories', 'action' => 'add']);
+		$builder->connect('/categories/edit', ['controller' => 'Categories', 'action' => 'edit']);
+		$builder->connect('/categories/delete', ['controller' => 'Categories', 'action' => 'delete']);
+
+		// Routes for Products
+		$builder->connect('/products', ['controller' => 'Products', 'action' => 'index']);
+		$builder->connect('/products/add', ['controller' => 'Products', 'action' => 'add']);
+		$builder->connect('/products/edit', ['controller' => 'Products', 'action' => 'edit']);
+		$builder->connect('/products/delete', ['controller' => 'Products', 'action' => 'delete']);
+
 		/*
 		 * Connect catchall routes for all controllers.
 		 *
