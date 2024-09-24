@@ -6,14 +6,15 @@
     "homepage": "https://cakephp.org",
     "require": {
         "php": ">=8.1",
+        "cakephp/authentication": "^3.1",
         "cakephp/cache": "^5.1",
         "cakephp/cakephp": "^5.1.0",
-        "cakephp/migrations": "^4.0.0",
+        "cakephp/migrations": "^4.4",
         "cakephp/plugin-installer": "^2.0",
         "mobiledetect/mobiledetectlib": "^4.8.03"
     },
     "require-dev": {
-        "cakephp/bake": "^3.0.0",
+        "cakephp/bake": "^3.2",
         "cakephp/cakephp-codesniffer": "^5.0",
         "cakephp/debug_kit": "^5.0.0",
         "friendsofphp/php-cs-fixer": "*",

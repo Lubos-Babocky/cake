@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace App\Console;
 
-if (!defined('STDIN')) {
-    define('STDIN', fopen('php://stdin', 'r'));
+if (!\defined('STDIN')) {
+    \define('STDIN', \fopen('php://stdin', 'r'));
 }
 
 use Cake\Codeception\Console\Installer as CodeceptionInstaller;
@@ -61,7 +61,7 @@ class Installer
     {
         $io = $event->getIO();
 
-        $rootDir = dirname(__DIR__, 2);
+        $rootDir = \dirname(__DIR__, 2);
 
         static::createAppLocalConfig($rootDir, $io);
         static::createWritableDirectories($rootDir, $io);
@@ -69,7 +69,7 @@ class Installer
         static::setFolderPermissions($rootDir, $io);
         static::setSecuritySalt($rootDir, $io);
 
-        if (class_exists(CodeceptionInstaller::class)) {
+        if (\class_exists(CodeceptionInstaller::class)) {
             CodeceptionInstaller::customizeCodeceptionBinary($event);
         }
     }
@@ -82,10 +82,11 @@ class Installer
      */
     public static function createAppLocalConfig(string $dir, IOInterface $io): void
     {
-        $appLocalConfig = $dir.'/config/app_local.php';
-        $appLocalConfigTemplate = $dir.'/config/app_local.example.php';
-        if (!file_exists($appLocalConfig)) {
-            copy($appLocalConfigTemplate, $appLocalConfig);
+        $appLocalConfig = $dir . '/config/app_local.php';
+        $appLocalConfigTemplate = $dir . '/config/app_local.example.php';
+
+        if (!\file_exists($appLocalConfig)) {
+            \copy($appLocalConfigTemplate, $appLocalConfig);
             $io->write('Created `config/app_local.php` file');
         }
     }
@@ -99,10 +100,11 @@ class Installer
     public static function createWritableDirectories(string $dir, IOInterface $io): void
     {
         foreach (static::WRITABLE_DIRS as $path) {
-            $path = $dir.'/'.$path;
-            if (!file_exists($path)) {
-                mkdir($path);
-                $io->write('Created `'.$path.'` directory');
+            $path = $dir . '/' . $path;
+
+            if (!\file_exists($path)) {
+                \mkdir($path);
+                $io->write('Created `' . $path . '` directory');
             }
         }
     }
@@ -120,9 +122,10 @@ class Installer
         // ask if the permissions should be changed
         if ($io->isInteractive()) {
             $validator = function (string $arg): string {
-                if (in_array($arg, ['Y', 'y', 'N', 'n'])) {
+                if (\in_array($arg, ['Y', 'y', 'N', 'n'])) {
                     return $arg;
                 }
+
                 throw new \Exception('This is not a valid answer. Please choose Y or n.');
             };
             $setFolderPermissions = $io->askAndValidate(
@@ -132,34 +135,37 @@ class Installer
                 'Y'
             );
 
-            if (in_array($setFolderPermissions, ['n', 'N'])) {
+            if (\in_array($setFolderPermissions, ['n', 'N'])) {
                 return;
             }
         }
 
         // Change the permissions on a path and output the results.
         $changePerms = function (string $path) use ($io): void {
-            $currentPerms = fileperms($path) & 0777;
+            $currentPerms = \fileperms($path) & 0777;
             $worldWritable = $currentPerms | 0007;
+
             if ($worldWritable == $currentPerms) {
                 return;
             }
 
-            $res = chmod($path, $worldWritable);
+            $res = \chmod($path, $worldWritable);
+
             if ($res) {
-                $io->write('Permissions set on '.$path);
+                $io->write('Permissions set on ' . $path);
             } else {
-                $io->write('Failed to set permissions on '.$path);
+                $io->write('Failed to set permissions on ' . $path);
             }
         };
 
         $walker = function (string $dir) use (&$walker, $changePerms): void {
             /** @phpstan-ignore-next-line */
-            $files = array_diff(scandir($dir), ['.', '..']);
-            foreach ($files as $file) {
-                $path = $dir.'/'.$file;
+            $files = \array_diff(\scandir($dir), ['.', '..']);
 
-                if (!is_dir($path)) {
+            foreach ($files as $file) {
+                $path = $dir . '/' . $file;
+
+                if (!\is_dir($path)) {
                     continue;
                 }
 
@@ -168,9 +174,9 @@ class Installer
             }
         };
 
-        $walker($dir.'/tmp');
-        $changePerms($dir.'/tmp');
-        $changePerms($dir.'/logs');
+        $walker($dir . '/tmp');
+        $changePerms($dir . '/tmp');
+        $changePerms($dir . '/logs');
     }
 
     /**
@@ -181,7 +187,7 @@ class Installer
      */
     public static function setSecuritySalt(string $dir, IOInterface $io): void
     {
-        $newKey = hash('sha256', Security::randomBytes(64));
+        $newKey = \hash('sha256', Security::randomBytes(64));
         static::setSecuritySaltInFile($dir, $io, $newKey, 'app_local.php');
     }
 
@@ -195,21 +201,22 @@ class Installer
      */
     public static function setSecuritySaltInFile(string $dir, IOInterface $io, string $newKey, string $file): void
     {
-        $config = $dir.'/config/'.$file;
-        $content = file_get_contents($config);
+        $config = $dir . '/config/' . $file;
+        $content = \file_get_contents($config);
 
         /** @phpstan-ignore-next-line */
-        $content = str_replace('__SALT__', $newKey, $content, $count);
+        $content = \str_replace('__SALT__', $newKey, $content, $count);
 
-        if (0 == $count) {
+        if ($count == 0) {
             $io->write('No Security.salt placeholder to replace.');
 
             return;
         }
 
-        $result = file_put_contents($config, $content);
+        $result = \file_put_contents($config, $content);
+
         if ($result) {
-            $io->write('Updated Security.salt value in config/'.$file);
+            $io->write('Updated Security.salt value in config/' . $file);
 
             return;
         }
@@ -226,20 +233,21 @@ class Installer
      */
     public static function setAppNameInFile(string $dir, IOInterface $io, string $appName, string $file): void
     {
-        $config = $dir.'/config/'.$file;
-        $content = file_get_contents($config);
+        $config = $dir . '/config/' . $file;
+        $content = \file_get_contents($config);
         /** @phpstan-ignore-next-line */
-        $content = str_replace('__APP_NAME__', $appName, $content, $count);
+        $content = \str_replace('__APP_NAME__', $appName, $content, $count);
 
-        if (0 == $count) {
+        if ($count == 0) {
             $io->write('No __APP_NAME__ placeholder to replace.');
 
             return;
         }
 
-        $result = file_put_contents($config, $content);
+        $result = \file_put_contents($config, $content);
+
         if ($result) {
-            $io->write('Updated __APP_NAME__ value in config/'.$file);
+            $io->write('Updated __APP_NAME__ value in config/' . $file);
 
             return;
         }
