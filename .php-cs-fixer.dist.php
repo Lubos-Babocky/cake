@@ -8,8 +8,5 @@ $finder = Finder::create()
     ->exclude('vendor');
 
 return (new Config())
-    ->setRules([
-        '@Symfony' => true,
-        // ďalšie pravidlá
-    ])
+    ->setRules((new Rshop\CS\Config\Rshop())->getRules())
     ->setFinder($finder);

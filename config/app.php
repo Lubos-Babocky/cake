@@ -93,17 +93,24 @@ return [
 	'Cache' => [
 		'_cake_core_' => [
 			'className' => 'File',
-			'path' => CACHE,
-			'prefix' => 'cake_core_',
+			'prefix' => 'myapp_core_',
+			'path' => CACHE . 'persistent/',
 			'serialize' => true,
-			'duration' => '+1 hour',
+			'duration' => '+2 minutes',
 		],
 		'_cake_model_' => [
 			'className' => 'File',
-			'path' => CACHE . 'models' . DS,
-			'prefix' => 'cake_model_',
+			'prefix' => 'myapp_model_',
+			'path' => CACHE . 'models/',
 			'serialize' => true,
-			'duration' => '+1 hour',
+			'duration' => '+2 minutes',
+		],
+		'_cake_translations_' => [
+			'className' => 'File',
+			'prefix' => 'myapp_translations_',
+			'path' => CACHE . 'translations/',
+			'serialize' => true,
+			'duration' => '+2 minutes',
 		],
 	],
 	'zzz_Cache' => [
