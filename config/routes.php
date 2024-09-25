@@ -55,7 +55,7 @@ return function (RouteBuilder $routes): void {
 		 * its action called 'display', and we pass a param to select the view file
 		 * to use (in this case, templates/Pages/home.php)...
 		 */
-		$builder->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
+		$builder->connect('/', ['controller' => 'Shop', 'action' => 'index']);
 
 		/*
 		 * ...and connect the rest of 'Pages' controller's URLs.
@@ -78,6 +78,19 @@ return function (RouteBuilder $routes): void {
 		$builder->connect('/products/add', ['controller' => 'Products', 'action' => 'add']);
 		$builder->connect('/products/edit', ['controller' => 'Products', 'action' => 'edit']);
 		$builder->connect('/products/delete', ['controller' => 'Products', 'action' => 'delete']);
+
+		// Routes for Shop
+		$builder->connect('/shop', ['controller' => 'Shop', 'action' => 'index']);
+		$builder->connect('/shop/{categoryId}', ['controller' => 'Shop', 'action' => 'index'], ['pass' => ['categoryId'], 'categoryId' => '\d+'])
+				->setPatterns(['categoryId' => '\d+'])
+				->setPass(['categoryId']);
+
+		// Routes for Cart
+		$builder->connect('/cart/clear-basket', ['controller' => 'Cart', 'action' => 'clearBasket']);
+		$builder->connect('/cart/info', ['controller' => 'Cart', 'action' => 'cartInfo']);
+		$builder->connect('/cart/add-to-cart/{productId}', ['controller' => 'Cart', 'action' => 'addToCart'])
+				->setPatterns(['productId' => '\d+'])
+				->setPass(['productId']);
 
 		/*
 		 * Connect catchall routes for all controllers.
