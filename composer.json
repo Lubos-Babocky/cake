@@ -11,7 +11,8 @@
         "cakephp/cakephp": "^5.1.0",
         "cakephp/migrations": "^4.4",
         "cakephp/plugin-installer": "^2.0",
-        "mobiledetect/mobiledetectlib": "^4.8.03"
+        "mobiledetect/mobiledetectlib": "^4.8.03",
+        "riesenia/cart": "^4.1"
     },
     "require-dev": {
         "cakephp/bake": "^3.2",

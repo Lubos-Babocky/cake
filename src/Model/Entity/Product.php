@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Riesenia\Cart\CartContext;
+use Riesenia\Cart\CartItemInterface;
 
 /**
  * Product Entity.
@@ -15,29 +17,54 @@ use Cake\ORM\Entity;
  * @property string                       $price
  * @property string                       $vat_rate
  * @property string|null                  $image
+ * @property float                        $cart_quantity
  * @property \Cake\I18n\DateTime          $created
  * @property \Cake\I18n\DateTime|null     $modified
  * @property \App\Model\Entity\Category[] $categories
  */
-class Product extends Entity
+class Product extends Entity implements CartItemInterface
 {
-    /**
-     * Fields that can be mass assigned using newEntity() or patchEntity().
-     *
-     * Note that when '*' is set to true, this allows all unspecified fields to
-     * be mass assigned. For security purposes, it is advised to set '*' to false
-     * (or remove it), and explicitly make individual fields accessible as needed.
-     *
-     * @var array<string, bool>
-     */
     protected array $_accessible = [
-        'name' => true,
-        'description' => true,
-        'price' => true,
-        'vat_rate' => true,
-        'image' => true,
-        'created' => true,
-        'modified' => true,
-        'categories' => true,
+        '*' => true,
+        'id' => false,
     ];
+
+    public function getCartId(): string
+    {
+        return (string) $this->id;
+    }
+
+    public function getCartType(): string
+    {
+        return 'product';
+    }
+
+    public function getCartName(): string
+    {
+        return $this->name;
+    }
+
+    public function setCartQuantity(float $quantity): void
+    {
+        $this->cart_quantity = $quantity;
+    }
+
+    public function getCartQuantity(): float
+    {
+        return $this->cart_quantity ?? 1.0;
+    }
+
+    public function getUnitPrice(): float
+    {
+        return (float) $this->price;
+    }
+
+    public function getTaxRate(): float
+    {
+        return (float) $this->vat_rate ?: 0.0;
+    }
+
+    public function setCartContext(CartContext $context): void
+    {
+    }
 }
