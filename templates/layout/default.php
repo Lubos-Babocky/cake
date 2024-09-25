@@ -39,6 +39,8 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 			</div>
 			<div class="top-nav-links">
 				<?php if ($this->Identity->isLoggedIn()): ?>
+					<?= $this->Html->link(__('Products'), ['controller' => 'Products', 'action' => 'index']) ?>
+					<?= $this->Html->link(__('Categories'), ['controller' => 'Categories', 'action' => 'index']) ?>
 					<?= $this->Html->link(__('Users'), ['controller' => 'Users', 'action' => 'index']) ?>
 					&nbsp;|&nbsp;Prihlásený ako: 
 					<?= $this->Identity->get('login'); ?>
