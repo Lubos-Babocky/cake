@@ -29,7 +29,9 @@ function renderCartItemsTable(data) {
 		tbody.appendChild(row);
 	});
 	table.appendChild(tbody);
-	document.getElementById('cart-items').appendChild(table);
+	const cartItemsTableContainer = document.getElementById('cart-items');
+	cartItemsTableContainer.innerHTML = '';
+	cartItemsTableContainer.appendChild(table);
 }
 
 

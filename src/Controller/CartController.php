@@ -9,6 +9,8 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 use Riesenia\Cart\Cart;
+use App\Model\Entity\CartQuantityPromotion;
+use App\Model\Entity\ItemQuantityPromotion;
 
 /**
  * Cart Controller.
@@ -53,25 +55,26 @@ class CartController extends AppController
 
     public function clearBasket(): Response
     {
-        $cart = $this->openCart();
-        $cart->clear();
-        $this->saveCart($cart);
-
+		$this->request->getSession()->delete('Cart');
         return $this->getResponse()
             ->withType('application/json')
-            ->withStringBody($this->getCartJsonDataForResponse($cart));
+            ->withStringBody($this->getCartJsonDataForResponse($this->openCart()));
     }
 
     public function cartInfo(): Response
     {
-        return $this->getResponse()
+		return $this->getResponse()
             ->withType('application/json')
             ->withStringBody($this->getCartJsonDataForResponse($this->openCart()));
     }
 
     protected function openCart(): Cart
     {
-        return $this->request->getSession()->read('Cart') ?: new Cart();
+		if(empty($cart = $this->request->getSession()->read('Cart'))) {
+			$cart = new Cart();
+			$cart->setPromotions($this->getPromotions());
+		}
+		return $cart;
     }
 
     protected function saveCart(Cart $cart): void
@@ -86,7 +89,15 @@ class CartController extends AppController
             'taxes' => (float) \array_sum(\array_map(function ($tax) {
                 return $tax->asFloat();
             }, $cart->getTaxes())),
-            'total' => $cart->getTotal()->asFloat()
+            'total' => $cart->getTotal()->asFloat(),
+			'items' => array_values($cart->getItems())
         ]) ?: null;
     }
+
+	/**
+	 * @return array
+	 */
+	protected function getPromotions(): array {
+		return [new ItemQuantityPromotion(10, 4), new CartQuantityPromotion(5, 10)];
+	}
 }
