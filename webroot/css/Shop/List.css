@@ -2,7 +2,10 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    margin-bottom: 70px;
+}
+
+#cart-items {
+	margin-bottom: 70px;
 }
 
 .product-card {
