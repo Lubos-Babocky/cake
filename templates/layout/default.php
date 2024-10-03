@@ -35,7 +35,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 	<body>
 		<nav class="top-nav">
 			<div class="top-nav-title">
-				CakePHP
+				<?= $this->Html->link(__('Shop'), ['controller' => 'Shop', 'action' => 'index']) ?>
 			</div>
 			<div class="top-nav-links">
 				<?php if ($this->Identity->isLoggedIn()): ?>

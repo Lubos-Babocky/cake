@@ -91,6 +91,12 @@ return function (RouteBuilder $routes): void {
 		$builder->connect('/cart/add-to-cart/{productId}', ['controller' => 'Cart', 'action' => 'addToCart'])
 				->setPatterns(['productId' => '\d+'])
 				->setPass(['productId']);
+		$builder->connect('/cart/decrease/{productId}', ['controller' => 'Cart', 'action' => 'decrease'])
+				->setPatterns(['productId' => '\d+'])
+				->setPass(['productId']);
+		$builder->connect('/cart/remove/{productId}', ['controller' => 'Cart', 'action' => 'remove'])
+				->setPatterns(['productId' => '\d+'])
+				->setPass(['productId']);
 
 		/*
 		 * Connect catchall routes for all controllers.

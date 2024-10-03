@@ -30,6 +30,9 @@
 			</div>
 		<?php endforeach; ?>
 	</div>
+	<div id="cart-items">
+		
+	</div>
 	<div id="cart-summary">
 		<span>Subtotal (without VAT): <strong>$<span id="cart-subtotal">0.00</span></strong></span>
 		<span> | Taxes: <strong>$<span id="cart-taxes">0.00</span></strong></span>
