@@ -5,16 +5,48 @@ function renderCartData(data) {
 	renderCartItemsTable(data.items);
 }
 
+function sendRequest(event) {
+	fetch(event.target.dataset.url, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	})
+			.then(response => response.json())
+			.then(renderCartData)
+			.catch(error => console.error('Error loading cart data:', error));
+}
+
 function renderCartItemsTable(data) {
 	const createCell = (type, content) => {
 		const cell = document.createElement(type);
 		cell.textContent = content;
 		return cell;
 	};
+	
+	const createCellWithButtons = (productId) => {
+		const cell = document.createElement('td');
+		const decreaseButton = document.createElement('span');
+		decreaseButton.textContent = '↓';
+		decreaseButton.dataset.url = '/cart/decrease/' + productId;
+		decreaseButton.classList.add('cart-button-decrease');
+		decreaseButton.addEventListener('click', (event) => sendRequest(event));
+
+		const removeButton = document.createElement('span');
+		removeButton.textContent = 'X';
+		removeButton.dataset.url = '/cart/remove/' + productId;
+		removeButton.classList.add('cart-button-remove');
+		removeButton.addEventListener('click', (event) => sendRequest(event));
+
+		cell.appendChild(decreaseButton);
+		cell.appendChild(removeButton);
+		return cell;
+	};
+	
 	const table = document.createElement('table');
 	const thead = document.createElement('thead');
 	const headerRow = document.createElement('tr');
-	['Title', 'Quantity', 'TAX', 'Price'].forEach(text => {
+	['Title', 'Quantity', 'TAX', 'Price', 'Akcie'].forEach(text => {
 		headerRow.appendChild(createCell('th', text));
 	});
 	thead.appendChild(headerRow);
@@ -25,7 +57,12 @@ function renderCartItemsTable(data) {
 		row.appendChild(createCell('td', item.name));
 		row.appendChild(createCell('td', item.cart_quantity));
 		row.appendChild(createCell('td', item.vat_rate));
-		row.appendChild(createCell('td', item.price));
+		row.appendChild(createCell('td', parseFloat(item.price).toFixed(2) + '€'));
+		if(typeof item.id === 'number') {
+			row.appendChild(createCellWithButtons(item.id));
+		} else {
+			row.appendChild(createCell('td', ''));
+		}
 		tbody.appendChild(row);
 	});
 	table.appendChild(tbody);
