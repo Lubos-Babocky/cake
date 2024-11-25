@@ -5040,16 +5040,16 @@
         },
         {
             "name": "rshop/php-cs-fixer-config",
-            "version": "v3.0.9",
+            "version": "v3.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/riesenia/php-cs-fixer-config.git",
-                "reference": "e9d1a8daf838747d6622ba9eb5887d21c7365672"
+                "reference": "825b9bc21c12b426e1cb6298552f6d1334894ec9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/riesenia/php-cs-fixer-config/zipball/e9d1a8daf838747d6622ba9eb5887d21c7365672",
-                "reference": "e9d1a8daf838747d6622ba9eb5887d21c7365672",
+                "url": "https://api.github.com/repos/riesenia/php-cs-fixer-config/zipball/825b9bc21c12b426e1cb6298552f6d1334894ec9",
+                "reference": "825b9bc21c12b426e1cb6298552f6d1334894ec9",
                 "shasum": ""
             },
             "type": "library",
@@ -5071,9 +5071,9 @@
             "description": "Provides a configuration for friendsofphp/php-cs-fixer",
             "support": {
                 "issues": "https://github.com/riesenia/php-cs-fixer-config/issues",
-                "source": "https://github.com/riesenia/php-cs-fixer-config/tree/v3.0.9"
+                "source": "https://github.com/riesenia/php-cs-fixer-config/tree/v3.0.10"
             },
-            "time": "2024-09-18T13:41:48+00:00"
+            "time": "2024-11-25T09:18:48+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -7169,5 +7169,5 @@
         "php": ">=8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.6.0"
 }
